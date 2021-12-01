@@ -16,16 +16,13 @@ function problem1(array) {
 }
 
 function problem2(array) {
-  return array
-    .map((curr, index, arr) =>
-      index + 2 < arr.length ? curr + arr[index + 1] + arr[index + 2] : null
-    )
-    .filter(Boolean)
-    .reduce(
-      (previousValue, currentValue, currentIndex, array) =>
-        (currentIndex === 1 ? 0 : previousValue) +
-        (currentValue > array[currentIndex - 1] ? 1 : 0)
-    );
+  return problem1(
+    array
+      .map((curr, index, arr) =>
+        index + 2 < arr.length ? curr + arr[index + 1] + arr[index + 2] : null
+      )
+      .filter(Boolean)
+  );
 }
 console.log(problem1(preProcess("1.1-input.txt")));
 console.log(problem2(preProcess("1.1-input.txt")));
