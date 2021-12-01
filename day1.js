@@ -10,8 +10,8 @@ const preProcess = (fileName) =>
 function problem1(array) {
   return array.reduce(
     (previousValue, currentValue, currentIndex, array) =>
-      (currentIndex === 1 ? 0 : previousValue) +
-      (currentValue > array[currentIndex - 1] ? 1 : 0)
+      previousValue + +(currentValue > array[currentIndex - 1]),
+    0
   );
 }
 
