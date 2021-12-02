@@ -1,12 +1,17 @@
 import { fileToArray } from "../common/utils.js";
 
+function stringToElements(string) {
+  const split = string.split(" ");
+  const direction = split[0];
+  const amount = parseInt(split[1], 10);
+  return { direction, amount };
+}
+
 function problem1(input) {
   let horizontal = 0;
   let depth = 0;
-  input.forEach((element) => {
-    const split = element.split(" ");
-    const direction = split[0];
-    const amount = parseInt(split[1], 10);
+  input.forEach((line) => {
+    const { direction, amount } = stringToElements(line);
     switch (direction) {
       case "forward":
         horizontal += amount;
@@ -28,10 +33,8 @@ function problem2(input) {
   let horizontal = 0;
   let depth = 0;
   let aim = 0;
-  input.forEach((element) => {
-    const split = element.split(" ");
-    const direction = split[0];
-    const amount = parseInt(split[1], 10);
+  input.forEach((line) => {
+    const { direction, amount } = stringToElements(line);
     switch (direction) {
       case "forward":
         horizontal += amount;
