@@ -29,6 +29,21 @@ function problem1(input) {
   return horizontal * depth;
 }
 
+function oneLineProblem1(input) {
+  return input
+    .map((item) => item.split(" "))
+    .map((item) => [item[0], parseInt(item[1], 10)])
+    .reduce(
+      (prev, curr) => [
+        prev[0] + (curr[0] === "forward" ? curr[1] : 0),
+        prev[1] +
+          (curr[0] === "down" ? curr[1] : curr[0] === "up" ? -curr[1] : 0),
+      ],
+      [0, 0]
+    )
+    .reduce((prev, curr) => prev * curr);
+}
+
 function problem2(input) {
   let horizontal = 0;
   let depth = 0;
