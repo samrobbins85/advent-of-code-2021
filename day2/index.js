@@ -1,7 +1,4 @@
-const fs = require("fs");
-
-const preProcess = (fileName) =>
-  fs.readFileSync(fileName).toString().split("\n");
+import { fileToArray } from "../common/utils.js";
 
 function problem1(input) {
   let horizontal = 0;
@@ -53,5 +50,5 @@ function problem2(input) {
   return horizontal * depth;
 }
 
-console.log(problem1(preProcess("day2/input.txt")));
-console.log(problem2(preProcess("day2/input.txt")));
+console.log(problem1(fileToArray("day2/input.txt")));
+console.log(problem2(fileToArray("day2/input.txt")));

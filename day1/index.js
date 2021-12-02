@@ -1,11 +1,7 @@
-const fs = require("fs");
+import { fileToArray } from "../common/utils.js";
 
 const preProcess = (fileName) =>
-  fs
-    .readFileSync(fileName)
-    .toString()
-    .split("\n")
-    .map((item) => parseInt(item, 10));
+  fileToArray(fileName).map((item) => parseInt(item, 10));
 
 function problem1(array) {
   return array.reduce(
@@ -24,5 +20,5 @@ function problem2(array) {
       .filter(Boolean)
   );
 }
-console.log(problem1(preProcess("input.txt")));
-console.log(problem2(preProcess("input.txt")));
+console.log(problem1(preProcess("day1/input.txt")));
+console.log(problem2(preProcess("day1/input.txt")));
