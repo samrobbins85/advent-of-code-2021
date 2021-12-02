@@ -24,5 +24,5 @@ function problem2(array) {
       .filter(Boolean)
   );
 }
-console.log(problem1(preProcess("1.1-input.txt")));
-console.log(problem2(preProcess("1.1-input.txt")));
+console.log(problem1(preProcess("input.txt")));
+console.log(problem2(preProcess("input.txt")));
