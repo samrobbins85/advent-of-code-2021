@@ -16,26 +16,19 @@ const data = [
 ];
 
 function part1(data) {
-  // Split each string into an array
-  const split = data.map((item) => Array.from(item));
-  // Build an empty matrix
-  const newArr = Array.from({ length: data[0].length }, () =>
-    Array.from({ length: data.length })
+  const binary = [...Array(data[0].length).keys()].map(
+    (item) =>
+      +(
+        data
+          .map((line) => parseInt(line[item], 10))
+          .reduce((prev, curr) => prev + curr) >
+        data.length / 2
+      )
   );
-  // Rotate the matrix
-  split.forEach((item, line) => {
-    item.forEach((char, index) => {
-      newArr[index][line] = char;
-    });
-  });
-  let gamma = newArr
-    .map((row) => row.map((item) => parseInt(item, 10)))
-    .map((row) => row.reduce((curr, prev) => curr + prev))
-    .map((item) => +(item > data.length / 2));
-  let epsilon = [...gamma];
-  gamma = parseInt(gamma.join(""), 2);
-  epsilon = parseInt(epsilon.map((item) => +!item).join(""), 2);
-  return gamma * epsilon;
+  return (
+    parseInt(binary.join(""), 2) *
+    parseInt(binary.map((item) => +!item).join(""), 2)
+  );
 }
 
 function part2(data) {
