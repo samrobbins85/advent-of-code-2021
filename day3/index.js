@@ -32,30 +32,20 @@ function part1(data) {
 }
 
 function part2(data) {
-  // Oxygen
-  let oxygenData = [...data];
-  let oxygenPosition = 0;
-  while (oxygenData.length > 1) {
-    const atIndex = oxygenData.map(
-      (item) => parseInt(item[oxygenPosition]),
-      10
-    );
-    let sum = atIndex.reduce((prev, curr) => prev + curr);
-    let mostCommon = +(sum >= atIndex.length / 2);
-    oxygenData = oxygenData.filter((_, index) => atIndex[index] === mostCommon);
-    oxygenPosition += 1;
+  function getResult(data, flip) {
+    let myPosition = 0;
+    while (data.length > 1) {
+      const atIndex = data.map((item) => parseInt(item[myPosition]), 10);
+      let sum = atIndex.reduce((prev, curr) => prev + curr);
+      let mostCommon = flip
+        ? +(sum >= atIndex.length / 2)
+        : +(sum < atIndex.length / 2);
+      data = data.filter((_, index) => atIndex[index] === mostCommon);
+      myPosition += 1;
+    }
+    return parseInt(data[0], 2);
   }
-  // CO2
-  let co2Data = [...data];
-  let co2Position = 0;
-  while (co2Data.length > 1) {
-    const atIndex = co2Data.map((item) => parseInt(item[co2Position]), 10);
-    let sum = atIndex.reduce((prev, curr) => prev + curr);
-    let mostCommon = +(sum < atIndex.length / 2);
-    co2Data = co2Data.filter((_, index) => atIndex[index] === mostCommon);
-    co2Position += 1;
-  }
-  return parseInt(co2Data[0], 2) * parseInt(oxygenData[0], 2);
+  return getResult(data, true) * getResult(data, false);
 }
 
 console.log(part1(fileToArray("day3/input.txt")));
