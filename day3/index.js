@@ -1,33 +1,15 @@
 import { fileToArray } from "../common/utils.js";
 
-const data = [
-  "00100",
-  "11110",
-  "10110",
-  "10111",
-  "10101",
-  "01111",
-  "00111",
-  "11100",
-  "10000",
-  "11001",
-  "00010",
-  "01010",
-];
+const mode = (array) => +(array.reduce((p, c) => p + c) >= array.length / 2);
+const fromBinary = (value) => parseInt(value, 2);
 
 function part1(data) {
-  const binary = [...Array(data[0].length).keys()].map(
-    (item) =>
-      +(
-        data
-          .map((line) => parseInt(line[item], 10))
-          .reduce((prev, curr) => prev + curr) >
-        data.length / 2
-      )
+  const binary = [...Array(data[0].length).keys()].map((item) =>
+    mode(data.map((line) => parseInt(line[item], 10)))
   );
   return (
-    parseInt(binary.join(""), 2) *
-    parseInt(binary.map((item) => +!item).join(""), 2)
+    fromBinary(binary.join("")) *
+    fromBinary(binary.map((item) => +!item).join(""))
   );
 }
 
@@ -36,14 +18,11 @@ function part2(data) {
     let myPosition = 0;
     while (data.length > 1) {
       const atIndex = data.map((item) => parseInt(item[myPosition]), 10);
-      let sum = atIndex.reduce((prev, curr) => prev + curr);
-      let mostCommon = flip
-        ? +(sum >= atIndex.length / 2)
-        : +(sum < atIndex.length / 2);
+      let mostCommon = flip ? mode(atIndex) : +!mode(atIndex);
       data = data.filter((_, index) => atIndex[index] === mostCommon);
       myPosition += 1;
     }
-    return parseInt(data[0], 2);
+    return fromBinary(data[0]);
   }
   return getResult(data, true) * getResult(data, false);
 }
