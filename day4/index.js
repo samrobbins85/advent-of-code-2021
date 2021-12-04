@@ -21,11 +21,7 @@ function part1(array) {
   draws.some((element) => {
     //   Remove called elements
     splitArray = splitArray.map((board) =>
-      board.map((row) => {
-        if (row.every((element) => element === "")) {
-        }
-        return row.map((item) => (item === element ? "" : item));
-      })
+      board.map((row) => row.map((item) => (item === element ? "" : item)))
     );
     // Do the checks
     let isBingoRow = splitArray.some((board, boardIndex) =>
