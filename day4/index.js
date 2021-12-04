@@ -18,30 +18,31 @@ function preProcess(array) {
   return { draws, splitArray };
 }
 
+const removeElement = (array, element) =>
+  array.map((board) =>
+    board.map((row) => row.map((item) => (item === element ? "" : item)))
+  );
+
+const bingoSum = (array) =>
+  array
+    .map((row) =>
+      row.filter(Boolean).reduce((prev, curr) => prev + parseInt(curr, 10), 0)
+    )
+    .reduce((prev, curr) => prev + curr);
+
 function part1(array) {
   let { draws, splitArray } = preProcess(array);
-  let winningBoard, result;
+  let result;
   draws.some((element) => {
-    //   Remove called elements
-    splitArray = splitArray.map((board) =>
-      board.map((row) => row.map((item) => (item === element ? "" : item)))
-    );
-    // Do the checks
-    let isBingoRow = splitArray.findIndex((board) =>
+    splitArray = removeElement(splitArray, element);
+    let bingoRow = splitArray.findIndex((board) =>
       board.some((row) => row.every((element) => element === ""))
     );
-    let isBingoColumn = splitArray.findIndex((board) =>
+    let bingoColumn = splitArray.findIndex((board) =>
       board.some((row, x) => row.every((_, y) => board[y][x] === ""))
     );
-    if (isBingoRow !== -1 || isBingoColumn !== -1) {
-      result =
-        splitArray[isBingoColumn || isBingoRow]
-          .map((row) =>
-            row
-              .filter(Boolean)
-              .reduce((prev, curr) => prev + parseInt(curr, 10), 0)
-          )
-          .reduce((prev, curr) => prev + curr) * element;
+    if (bingoRow !== -1 || bingoColumn !== -1) {
+      result = bingoSum(splitArray[bingoColumn || bingoRow]) * element;
       return true;
     }
   });
@@ -50,40 +51,31 @@ function part1(array) {
 
 function part2(array) {
   let { draws, splitArray } = preProcess(array);
-  let winningBoard, result;
+  let result;
   let remainingBoards = [...Array(splitArray.length).keys()];
   draws.some((element) => {
-    splitArray = splitArray.map((board) =>
-      board.map((row) => row.map((item) => (item === element ? "" : item)))
-    );
-    splitArray.map((board, boardIndex) =>
+    splitArray = removeElement(splitArray, element);
+    const index = splitArray.findIndex((board, boardIndex) =>
       board.some((row, x) => {
-        const rowCheck = row.every((element) => element === "");
-        const columnCheck = row.every((_, y) => board[y][x] === "");
-        if (rowCheck || columnCheck) {
+        const check =
+          row.every((element) => element === "") ||
+          row.every((_, y) => board[y][x] === "");
+        if (check) {
           if (
             remainingBoards.length === 1 &&
             remainingBoards[0] === boardIndex
           ) {
-            winningBoard = boardIndex;
+            return true;
           }
           remainingBoards = remainingBoards.filter(
             (item) => item !== boardIndex
           );
-          return true;
         }
       })
     );
 
-    if (winningBoard) {
-      result =
-        splitArray[winningBoard]
-          .map((row) =>
-            row
-              .filter(Boolean)
-              .reduce((prev, curr) => prev + parseInt(curr, 10), 0)
-          )
-          .reduce((prev, curr) => prev + curr) * element;
+    if (index != -1) {
+      result = bingoSum(splitArray[index]) * element;
       return true;
     }
   });
