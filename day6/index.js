@@ -27,13 +27,15 @@ function part2(array) {
     array[8] += child;
     return array;
   }
-  let input = array[0].split(",").map((item) => parseInt(item, 10));
   let ages = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  input.forEach((age) => (ages[age] += 1));
+  array[0]
+    .split(",")
+    .map((item) => parseInt(item, 10))
+    .forEach((age) => (ages[age] += 1));
   for (let day = 0; day < 256; day++) {
-    input = mutate(ages);
+    ages = mutate(ages);
   }
-  return input.reduce((prev, curr) => prev + curr);
+  return ages.reduce((prev, curr) => prev + curr);
 }
 console.log(part1(fileToArray("day6/input.txt")));
 console.log(part2(fileToArray("day6/input.txt")));
