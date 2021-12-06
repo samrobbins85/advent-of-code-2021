@@ -29,7 +29,7 @@ function constantCoord(item) {
   }
 }
 
-function constantIdex(item) {
+function constantIndex(item) {
   if (item[0][0] === item[1][0]) {
     return 0;
   } else {
@@ -51,7 +51,7 @@ function processStraight(array) {
   return array
     .map((item) =>
       range(changingCoord(item)).map((it) =>
-        constantIdex(item)
+        constantIndex(item)
           ? `${it},${constantCoord(item)}`
           : `${constantCoord(item)},${it}`
       )
