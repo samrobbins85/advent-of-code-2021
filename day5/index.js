@@ -3,6 +3,10 @@ function range(arr) {
   let [start, end] = arr;
   if (start > end) {
     [start, end] = [end, start];
+    return Array(end - start + 1)
+      .fill()
+      .map((_, i) => start + i)
+      .reverse();
   }
   return Array(end - start + 1)
     .fill()
@@ -33,67 +37,18 @@ function constantIdex(item) {
   }
 }
 
-function problem1(array) {
-  const splitArray = array.map((item) =>
+function preProcess(array) {
+  return array.map((item) =>
     item
       .split(" -> ")
       .map((coordinate) =>
         coordinate.split(",").map((item) => parseInt(item, 10))
       )
   );
-  const hOrV = splitArray.filter(
-    (item) => item[0][0] === item[1][0] || item[0][1] === item[1][1]
-  );
-  return hOrV
-    .map((item) =>
-      range(changingCoord(item)).map((it) =>
-        constantIdex(item)
-          ? `${it},${constantCoord(item)}`
-          : `${constantCoord(item)},${it}`
-      )
-    )
-    .flat()
-    .filter(
-      (a, index, array) =>
-        array.indexOf(a) === index && array.lastIndexOf(a) !== index
-    ).length;
 }
 
-function rangeRefined(arr) {
-  let [start, end] = arr;
-  if (start > end) {
-    [start, end] = [end, start];
-    return Array(end - start + 1)
-      .fill()
-      .map((_, i) => start + i)
-      .reverse();
-  }
-  return Array(end - start + 1)
-    .fill()
-    .map((_, i) => start + i);
-}
-
-function processDiagonal(entry) {
-  let xRange = rangeRefined([entry[0][0], entry[1][0]]);
-  let yRange = rangeRefined([entry[0][1], entry[1][1]]);
-  xRange = xRange.map((item, index) => `${item},${yRange[index]}`);
-  return xRange;
-}
-
-function problem2(array) {
-  const splitArray = array.map((item) =>
-    item
-      .split(" -> ")
-      .map((coordinate) =>
-        coordinate.split(",").map((item) => parseInt(item, 10))
-      )
-  );
-  const hOrV = splitArray.filter(
-    (item) => item[0][0] === item[1][0] || item[0][1] === item[1][1]
-  );
-  const diagonal = splitArray.filter((x) => !hOrV.includes(x));
-  const dia2 = diagonal.map((item) => processDiagonal(item)).flat();
-  const straight = hOrV
+function processStraight(array) {
+  return array
     .map((item) =>
       range(changingCoord(item)).map((it) =>
         constantIdex(item)
@@ -102,14 +57,43 @@ function problem2(array) {
       )
     )
     .flat();
+}
+
+function problem1(array) {
+  const splitArray = preProcess(array);
+  const hOrV = splitArray.filter(
+    (item) => item[0][0] === item[1][0] || item[0][1] === item[1][1]
+  );
+  return processStraight(hOrV).filter(
+    (a, index, array) =>
+      array.indexOf(a) === index && array.lastIndexOf(a) !== index
+  ).length;
+}
+
+function processDiagonal(entry) {
+  let xRange = range([entry[0][0], entry[1][0]]);
+  let yRange = range([entry[0][1], entry[1][1]]);
+  return xRange.map((item, index) => `${item},${yRange[index]}`);
+}
+
+function problem2(array) {
+  const splitArray = preProcess(array);
+  const hOrV = splitArray.filter(
+    (item) => item[0][0] === item[1][0] || item[0][1] === item[1][1]
+  );
+  const diagonal = splitArray
+    .filter((x) => !hOrV.includes(x))
+    .map((item) => processDiagonal(item))
+    .flat();
+  const straight = processStraight(hOrV);
 
   const all = straight
-    .concat(dia2)
+    .concat(diagonal)
     .filter(
       (a, index, array) =>
         array.indexOf(a) === index && array.lastIndexOf(a) !== index
     ).length;
   return all;
 }
-
-console.log(problem2(fileToArray("day5/input.txt")));
+console.log(problem1(fileToArray("day5/input_short.txt")));
+console.log(problem2(fileToArray("day5/input_short.txt")));
