@@ -83,5 +83,52 @@ function part2(array) {
   return result[0] * result[1] * result[2];
 }
 
+function part2Recurse(array) {
+  const input = array.map((item) =>
+    Array.from(item).map((char) => parseInt(char, 10))
+  );
+  let outArr = JSON.parse(JSON.stringify(input));
+  let outCoords = [];
+  input.forEach((row, y) =>
+    row.forEach((cell, x) => {
+      if (
+        cell < (input?.[y]?.[x - 1] ?? 10) &&
+        cell < (input?.[y]?.[x + 1] ?? 10) &&
+        cell < (input?.[y + 1]?.[x] ?? 10) &&
+        cell < (input?.[y - 1]?.[x] ?? 10)
+      ) {
+        outCoords.push([y, x]);
+        outArr[y][x] = 1;
+      } else {
+        outArr[y][x] = 0;
+      }
+    })
+  );
+  return outCoords
+    .map((item) => {
+      const filledCoords = [];
+      function fill(node) {
+        if (
+          input?.[node[0]]?.[node[1]] === undefined ||
+          filledCoords.includes(`${node[0]},${node[1]}`) ||
+          input[node[0]][node[1]] === 9
+        ) {
+          return;
+        } else {
+          filledCoords.push(`${node[0]},${node[1]}`);
+        }
+        fill([node[0] + 1, node[1]]);
+        fill([node[0] - 1, node[1]]);
+        fill([node[0], node[1] + 1]);
+        fill([node[0], node[1] - 1]);
+      }
+      fill(item);
+      return filledCoords.length;
+    })
+    .sort((a, b) => b - a)
+    .slice(0, 3)
+    .reduce((prev, next) => prev * next);
+}
+
 console.log(part1(fileToArray("day9/input.txt")));
-console.log(part2(fileToArray("day9/input.txt")));
+console.log(part2Recurse(fileToArray("day9/input.txt")));
