@@ -12,16 +12,9 @@ function part1(array) {
 }
 
 function decode(input, numbers) {
-  let mapping = Object.fromEntries(
-    Object.entries(numbers).map(([k, v]) => [v.join(""), k])
+  return Object.values(numbers).findIndex(
+    (item) => item.sort().join(",") === Array.from(input).sort().join(",")
   );
-  const match = Object.keys(mapping).findIndex((string) => {
-    const patternArray = Array.from(string);
-    if (patternArray.sort().join(",") === Array.from(input).sort().join(",")) {
-      return true;
-    }
-  });
-  return Object.values(mapping)[match];
 }
 
 function part2(array) {
@@ -33,28 +26,26 @@ function part2(array) {
         numbers[index] = Array.from(value);
         charSet.splice(charSet.indexOf(value), 1);
       }
-      const one = charSet.filter((item) => item.length === 2)[0];
-      removeValue(one, 1);
-      const four = charSet.filter((item) => item.length === 4)[0];
-      removeValue(four, 4);
-      const seven = charSet.filter((item) => item.length === 3)[0];
-      removeValue(seven, 7);
-      const eight = charSet.filter((item) => item.length === 7)[0];
-      removeValue(eight, 8);
-      const three = charSet
-        .filter((item) => item.length === 5)
-        .filter((arr) => numbers[1].every((item) => arr.includes(item)))[0];
+      function ofLength(length) {
+        return charSet.filter((item) => item.length === length);
+      }
+      removeValue(ofLength(2)[0], 1);
+      removeValue(ofLength(4)[0], 4);
+      removeValue(ofLength(3)[0], 7);
+      removeValue(ofLength(7)[0], 8);
+      const three = ofLength(5).filter((arr) =>
+        numbers[1].every((item) => arr.includes(item))
+      )[0];
       removeValue(three, 3);
-      const six = charSet
-        .filter((item) => item.length === 6)
-        .filter((arr) => !numbers[1].every((item) => arr.includes(item)))[0];
+      const six = ofLength(6).filter(
+        (arr) => !numbers[1].every((item) => arr.includes(item))
+      )[0];
       removeValue(six, 6);
-      const nine = charSet
-        .filter((item) => item.length === 6)
-        .filter((arr) => numbers[4].every((item) => arr.includes(item)))[0];
+      const nine = ofLength(6).filter((arr) =>
+        numbers[4].every((item) => arr.includes(item))
+      )[0];
       removeValue(nine, 9);
-      const zero = charSet.filter((item) => item.length === 6)[0];
-      removeValue(zero, 0);
+      removeValue(ofLength(6)[0], 0);
       const c = numbers[8].filter((x) => !numbers[6].includes(x))[0];
       const two = charSet.filter((item) => Array.from(item).includes(c))[0];
       removeValue(two, 2);
