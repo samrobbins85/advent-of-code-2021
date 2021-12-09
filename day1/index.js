@@ -1,9 +1,9 @@
 import { fileToArray } from "../common/utils.js";
 
-const preProcess = (fileName) =>
+export const preProcess = (fileName) =>
   fileToArray(fileName).map((item) => parseInt(item, 10));
 
-function problem1(array) {
+export function problem1(array) {
   return array.reduce(
     (previousValue, currentValue, currentIndex, array) =>
       previousValue + +(currentValue > array[currentIndex - 1]),
@@ -11,7 +11,7 @@ function problem1(array) {
   );
 }
 
-function problem2(array) {
+export function problem2(array) {
   return problem1(
     array
       .map((curr, index, arr) =>

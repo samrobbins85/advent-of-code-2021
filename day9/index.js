@@ -1,6 +1,6 @@
 import { fileToArray } from "../common/utils.js";
 
-function part1(array) {
+export function part1(array) {
   const input = array.map((item) =>
     Array.from(item).map((char) => parseInt(char, 10))
   );
@@ -21,7 +21,7 @@ function part1(array) {
   return output.reduce((prev, curr) => prev + curr);
 }
 
-function part2(array) {
+export function part2(array) {
   const input = array.map((item) =>
     Array.from(item).map((char) => parseInt(char, 10))
   );
@@ -131,4 +131,4 @@ function part2Recurse(array) {
 }
 
 console.log(part1(fileToArray("day9/input.txt")));
-console.log(part2Recurse(fileToArray("day9/input.txt")));
+console.log(part2(fileToArray("day9/input.txt")));

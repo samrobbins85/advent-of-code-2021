@@ -7,7 +7,7 @@ function stringToElements(string) {
   return { direction, amount };
 }
 
-function problem1(input) {
+export function problem1(input) {
   let horizontal = 0;
   let depth = 0;
   input.forEach((line) => {
@@ -44,7 +44,7 @@ function oneLineProblem1(input) {
     .reduce((prev, curr) => prev * curr);
 }
 
-function problem2(input) {
+export function problem2(input) {
   let horizontal = 0;
   let depth = 0;
   let aim = 0;

@@ -59,7 +59,7 @@ function processStraight(array) {
     .flat();
 }
 
-function problem1(array) {
+export function part1(array) {
   const splitArray = preProcess(array);
   const hOrV = splitArray.filter(
     (item) => item[0][0] === item[1][0] || item[0][1] === item[1][1]
@@ -76,7 +76,7 @@ function processDiagonal(entry) {
   return xRange.map((item, index) => `${item},${yRange[index]}`);
 }
 
-function problem2(array) {
+export function part2(array) {
   const splitArray = preProcess(array);
   const hOrV = splitArray.filter(
     (item) => item[0][0] === item[1][0] || item[0][1] === item[1][1]
@@ -95,5 +95,5 @@ function problem2(array) {
     ).length;
   return all;
 }
-console.log(problem1(fileToArray("day5/input_short.txt")));
-console.log(problem2(fileToArray("day5/input_short.txt")));
+console.log(part1(fileToArray("day5/input_short.txt")));
+console.log(part2(fileToArray("day5/input_short.txt")));

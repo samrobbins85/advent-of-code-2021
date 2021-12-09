@@ -30,7 +30,7 @@ const bingoSum = (array) =>
     )
     .reduce((prev, curr) => prev + curr);
 
-function part1(array) {
+export function part1(array) {
   let { draws, splitArray } = preProcess(array);
   let result;
   draws.some((element) => {
@@ -49,7 +49,7 @@ function part1(array) {
   return result;
 }
 
-function part2(array) {
+export function part2(array) {
   let { draws, splitArray } = preProcess(array);
   let result;
   let remainingBoards = [...Array(splitArray.length).keys()];

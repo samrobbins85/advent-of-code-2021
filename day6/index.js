@@ -1,6 +1,6 @@
 import { fileToArray } from "../common/utils.js";
 
-function part1(array) {
+export function part1(array) {
   function mutate(array) {
     array.forEach((item, index) => {
       if (item === 0) {
@@ -19,7 +19,7 @@ function part1(array) {
   return input.length;
 }
 
-function part2(array) {
+export function part2(array) {
   function mutate(array) {
     const child = array.shift();
     array[8] = 0;

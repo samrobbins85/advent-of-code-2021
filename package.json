@@ -7,10 +7,17 @@
     "type": "git",
     "url": "git+https://github.com/samrobbins85/advent-of-code-2021.git"
   },
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent"
+  },
   "author": "Sam Robbins",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/samrobbins85/advent-of-code-2021/issues"
   },
-  "homepage": "https://github.com/samrobbins85/advent-of-code-2021#readme"
+  "homepage": "https://github.com/samrobbins85/advent-of-code-2021#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^27.4.3"
+  }
 }

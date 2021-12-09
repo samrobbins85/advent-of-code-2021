@@ -12,10 +12,10 @@ function core(array, comparison) {
     )
   );
 }
-function part1(array) {
+export function part1(array) {
   return core(array, (index, item) => Math.abs(index - item));
 }
-function part2(array) {
+export function part2(array) {
   return core(array, (index, item) => triangle(Math.abs(index - item)));
 }
 

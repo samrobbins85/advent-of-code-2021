@@ -1,6 +1,6 @@
 import { fileToArray } from "../common/utils.js";
 
-function part1(array) {
+export function part1(array) {
   return array
     .map((item) =>
       item
@@ -17,7 +17,7 @@ function decode(input, numbers) {
   );
 }
 
-function part2(array) {
+export function part2(array) {
   return array
     .map((item) => {
       let charSet = item.split(" | ")[0].split(" ");
