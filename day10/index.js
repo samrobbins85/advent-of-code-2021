@@ -1,7 +1,6 @@
 import { fileToArray } from "../common/utils.js";
 
-export function part1(array) {
-  const input = array.map((item) => Array.from(item));
+function processEntry(array) {
   const opening = ["(", "[", "{", "<"];
   const closing = [")", "]", "}", ">"];
   const penalties = {
@@ -10,20 +9,25 @@ export function part1(array) {
     "}": 1197,
     ">": 25137,
   };
-  const out = input.map((row) => {
-    let stack = [];
-    let score = 0;
-    row.forEach((character) => {
-      if (opening.includes(character)) {
-        stack.push(character);
-      } else {
-        const top = stack.pop();
-        if (!(opening.indexOf(top) === closing.indexOf(character))) {
-          score += penalties[character];
-        }
+  let stack = [];
+  let score = 0;
+  array.forEach((character) => {
+    if (opening.includes(character)) {
+      stack.push(character);
+    } else {
+      const top = stack.pop();
+      if (!(opening.indexOf(top) === closing.indexOf(character))) {
+        score += penalties[character];
       }
-    });
+    }
+  });
+  return { score, stack };
+}
 
+export function part1(array) {
+  const input = array.map((item) => Array.from(item));
+  const out = input.map((row) => {
+    const { score } = processEntry(row);
     return score;
   });
   return out.reduce((prev, curr) => prev + curr);
@@ -31,14 +35,6 @@ export function part1(array) {
 
 export function part2(array) {
   const input = array.map((item) => Array.from(item));
-  const opening = ["(", "[", "{", "<"];
-  const closing = [")", "]", "}", ">"];
-  const penalties = {
-    ")": 3,
-    "]": 57,
-    "}": 1197,
-    ">": 25137,
-  };
   const completion = {
     "(": 1,
     "[": 2,
@@ -46,18 +42,7 @@ export function part2(array) {
     "<": 4,
   };
   const out = input.map((row) => {
-    let stack = [];
-    let score = 0;
-    row.forEach((character) => {
-      if (opening.includes(character)) {
-        stack.push(character);
-      } else {
-        const top = stack.pop();
-        if (!(opening.indexOf(top) === closing.indexOf(character))) {
-          score += penalties[character];
-        }
-      }
-    });
+    const { score, stack } = processEntry(row);
     if (score === 0 && stack.length > 0) {
       return stack
         .map((item) => completion[item])
