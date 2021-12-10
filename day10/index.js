@@ -1,6 +1,35 @@
 import { fileToArray } from "../common/utils.js";
 
-function part1(array) {
+export function part1(array) {
+  const input = array.map((item) => Array.from(item));
+  const opening = ["(", "[", "{", "<"];
+  const closing = [")", "]", "}", ">"];
+  const penalties = {
+    ")": 3,
+    "]": 57,
+    "}": 1197,
+    ">": 25137,
+  };
+  const out = input.map((row) => {
+    let stack = [];
+    let score = 0;
+    row.forEach((character) => {
+      if (opening.includes(character)) {
+        stack.push(character);
+      } else {
+        const top = stack.pop();
+        if (!(opening.indexOf(top) === closing.indexOf(character))) {
+          score += penalties[character];
+        }
+      }
+    });
+
+    return score;
+  });
+  return out.reduce((prev, curr) => prev + curr);
+}
+
+export function part2(array) {
   const input = array.map((item) => Array.from(item));
   const opening = ["(", "[", "{", "<"];
   const closing = [")", "]", "}", ">"];
@@ -42,3 +71,4 @@ function part1(array) {
 }
 
 console.log(part1(fileToArray("day10/input.txt")));
+console.log(part2(fileToArray("day10/input.txt")));
