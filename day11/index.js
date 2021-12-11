@@ -12,11 +12,7 @@ function increaseAdjacent(position, increaseSingle) {
 }
 
 function increaseAll(input) {
-  return input.map((rows) =>
-    rows.map((cell) => {
-      return cell + 1;
-    })
-  );
+  return input.map((rows) => rows.map((cell) => cell + 1));
 }
 
 function preProcess(array) {
@@ -47,7 +43,6 @@ export function part1(array) {
         (cell, x) => cell === 1 && increaseAdjacent([y, x], increaseSingle)
       )
     );
-
     input = input.map((row) =>
       row.map((cell) => {
         if (cell > 9) {
@@ -77,15 +72,12 @@ export function part2(array) {
         }
       }
     }
-
     flashTemplate.forEach((row, y) =>
       row.forEach(
         (cell, x) => cell === 1 && increaseAdjacent([y, x], increaseSingle)
       )
     );
-
     input = input.map((row) => row.map((cell) => (cell > 9 ? 0 : cell)));
-
     const allFlash = input.every((row) => row.every((cell) => cell === 0));
     if (allFlash) {
       return step;
