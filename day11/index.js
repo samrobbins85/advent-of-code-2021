@@ -1,18 +1,34 @@
 import { fileToArray } from "../common/utils.js";
+function increaseAdjacent(position, increaseSingle) {
+  increaseSingle([position[0] + 1, position[1]]);
+  increaseSingle([position[0] + -1, position[1]]);
+  increaseSingle([position[0], position[1] + 1]);
+  increaseSingle([position[0], position[1] - 1]);
+  increaseSingle([position[0] + 1, position[1] + 1]);
+  increaseSingle([position[0] + 1, position[1] - 1]);
+  increaseSingle([position[0] - 1, position[1] + 1]);
+  increaseSingle([position[0] - 1, position[1] - 1]);
+}
 
-function part1(array) {
-  let input = array.map((item) =>
+function increaseAll(input) {
+  return input.map((rows) =>
+    rows.map((cell) => {
+      return cell + 1;
+    })
+  );
+}
+
+function preProcess(array) {
+  return array.map((item) =>
     Array.from(item).map((char) => parseInt(char, 10))
   );
+}
+
+function part1(array) {
+  let input = preProcess(array);
   let total_flashes = 0;
   for (let step = 0; step < 100; step++) {
-    // First the energy level of each octopus increases by 1
-    input = input.map((rows) =>
-      rows.map((cell) => {
-        return cell + 1;
-      })
-    );
-    // Any octopus with an energy level greater than 9 flashes
+    input = increaseAll(input);
     let all_flashed = [];
     function increaseSingle(position) {
       if (!all_flashed.includes(`${position[0]},${position[1]}`)) {
@@ -21,19 +37,9 @@ function part1(array) {
         }
         if (input?.[position[0]]?.[position[1]] > 9) {
           all_flashed.push(`${position[0]},${position[1]}`);
-          increaseAdjacent(position);
+          increaseAdjacent(position, increaseSingle);
         }
       }
-    }
-    function increaseAdjacent(position) {
-      increaseSingle([position[0] + 1, position[1]]);
-      increaseSingle([position[0] + -1, position[1]]);
-      increaseSingle([position[0], position[1] + 1]);
-      increaseSingle([position[0], position[1] - 1]);
-      increaseSingle([position[0] + 1, position[1] + 1]);
-      increaseSingle([position[0] + 1, position[1] - 1]);
-      increaseSingle([position[0] - 1, position[1] + 1]);
-      increaseSingle([position[0] - 1, position[1] - 1]);
     }
     input.forEach((row, y) =>
       row.forEach((cell, x) => {
@@ -43,14 +49,18 @@ function part1(array) {
       })
     );
     all_flashed.forEach((item) =>
-      increaseAdjacent(item.split(",").map((item) => parseInt(item, 10)))
+      increaseAdjacent(
+        item.split(",").map((item) => parseInt(item, 10)),
+        increaseSingle
+      )
     );
-    // This is the last step
-    input.forEach((row, y) =>
-      row.forEach((cell, x) => {
+    input = input.map((row) =>
+      row.map((cell) => {
         if (cell > 9) {
-          input[y][x] = 0;
           total_flashes += 1;
+          return 0;
+        } else {
+          return cell;
         }
       })
     );
@@ -59,19 +69,11 @@ function part1(array) {
 }
 
 function part2(array) {
-  let input = array.map((item) =>
-    Array.from(item).map((char) => parseInt(char, 10))
-  );
+  let input = preProcess(array);
   let result = null;
   let step = 0;
   while (result === null) {
-    // First the energy level of each octopus increases by 1
-    input = input.map((rows) =>
-      rows.map((cell) => {
-        return cell + 1;
-      })
-    );
-    // Any octopus with an energy level greater than 9 flashes
+    input = increaseAll(input);
     let all_flashed = [];
     function increaseSingle(position) {
       if (!all_flashed.includes(`${position[0]},${position[1]}`)) {
@@ -80,19 +82,9 @@ function part2(array) {
         }
         if (input?.[position[0]]?.[position[1]] > 9) {
           all_flashed.push(`${position[0]},${position[1]}`);
-          increaseAdjacent(position);
+          increaseAdjacent(position, increaseSingle);
         }
       }
-    }
-    function increaseAdjacent(position) {
-      increaseSingle([position[0] + 1, position[1]]);
-      increaseSingle([position[0] + -1, position[1]]);
-      increaseSingle([position[0], position[1] + 1]);
-      increaseSingle([position[0], position[1] - 1]);
-      increaseSingle([position[0] + 1, position[1] + 1]);
-      increaseSingle([position[0] + 1, position[1] - 1]);
-      increaseSingle([position[0] - 1, position[1] + 1]);
-      increaseSingle([position[0] - 1, position[1] - 1]);
     }
     input.forEach((row, y) =>
       row.forEach((cell, x) => {
@@ -102,16 +94,13 @@ function part2(array) {
       })
     );
     all_flashed.forEach((item) =>
-      increaseAdjacent(item.split(",").map((item) => parseInt(item, 10)))
+      increaseAdjacent(
+        item.split(",").map((item) => parseInt(item, 10)),
+        increaseSingle
+      )
     );
-    // This is the last step
-    input.forEach((row, y) =>
-      row.forEach((cell, x) => {
-        if (cell > 9) {
-          input[y][x] = 0;
-        }
-      })
-    );
+
+    input = input.map((row) => row.map((cell) => (cell > 9 ? 0 : cell)));
 
     const allFlash = input.every((row) => row.every((cell) => cell === 0));
     if (allFlash) {
