@@ -24,12 +24,23 @@ function preProcess(array) {
   );
 }
 
+function getFlashedCells(input) {
+  const flashed = [];
+  input.forEach((row, y) =>
+    row.forEach((cell, x) => {
+      if (cell > 9) {
+        flashed.push(`${y},${x}`);
+      }
+    })
+  );
+  return flashed;
+}
+
 function part1(array) {
   let input = preProcess(array);
   let total_flashes = 0;
   for (let step = 0; step < 100; step++) {
     input = increaseAll(input);
-    let all_flashed = [];
     function increaseSingle(position) {
       if (!all_flashed.includes(`${position[0]},${position[1]}`)) {
         if (input?.[position[0]]?.[position[1]]) {
@@ -41,13 +52,7 @@ function part1(array) {
         }
       }
     }
-    input.forEach((row, y) =>
-      row.forEach((cell, x) => {
-        if (cell > 9) {
-          all_flashed.push(`${y},${x}`);
-        }
-      })
-    );
+    let all_flashed = getFlashedCells(input);
     all_flashed.forEach((item) =>
       increaseAdjacent(
         item.split(",").map((item) => parseInt(item, 10)),
@@ -59,9 +64,8 @@ function part1(array) {
         if (cell > 9) {
           total_flashes += 1;
           return 0;
-        } else {
-          return cell;
         }
+        return cell;
       })
     );
   }
@@ -70,11 +74,8 @@ function part1(array) {
 
 function part2(array) {
   let input = preProcess(array);
-  let result = null;
-  let step = 0;
-  while (result === null) {
+  for (let step = 1; ; step++) {
     input = increaseAll(input);
-    let all_flashed = [];
     function increaseSingle(position) {
       if (!all_flashed.includes(`${position[0]},${position[1]}`)) {
         if (input?.[position[0]]?.[position[1]]) {
@@ -86,13 +87,8 @@ function part2(array) {
         }
       }
     }
-    input.forEach((row, y) =>
-      row.forEach((cell, x) => {
-        if (cell > 9) {
-          all_flashed.push(`${y},${x}`);
-        }
-      })
-    );
+    let all_flashed = getFlashedCells(input);
+
     all_flashed.forEach((item) =>
       increaseAdjacent(
         item.split(",").map((item) => parseInt(item, 10)),
@@ -104,11 +100,9 @@ function part2(array) {
 
     const allFlash = input.every((row) => row.every((cell) => cell === 0));
     if (allFlash) {
-      result = step + 1;
+      return step;
     }
-    step++;
   }
-  return result;
 }
 console.log(part1(fileToArray("day11/input.txt")));
 console.log(part2(fileToArray("day11/input.txt")));
