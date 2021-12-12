@@ -6,20 +6,20 @@ function adjacentNodes(paths, node) {
         .map((item) => (item[0] === node ? item[1] : item[0]));
 }
 
-function part1(array) {
+export function part1(array) {
     const paths = array.map((path) => path.split("-"));
     const startingNodes = adjacentNodes(paths, "start");
     let all_paths = [];
     function visitAdjacentNodes(current_path) {
         const next_nodes = adjacentNodes(paths, current_path.at(-1));
-        next_nodes.forEach((node) => {
+        next_nodes.forEach((cave) => {
             let tpath = [...current_path];
-            tpath.push(node);
-            if (node === "end") {
+            tpath.push(cave);
+            if (cave === "end") {
                 all_paths.push(tpath);
             } else if (
-                node !== "start" &&
-                (node === node.toUpperCase() || !current_path.includes(node))
+                cave !== "start" &&
+                (cave === cave.toUpperCase() || !current_path.includes(cave))
             ) {
                 visitAdjacentNodes(tpath);
             }
@@ -29,33 +29,30 @@ function part1(array) {
     return all_paths.length;
 }
 
-function part2(array) {
+export function part2(array) {
     const paths = array.map((path) => path.split("-"));
     const startingNodes = adjacentNodes(paths, "start");
     let all_paths = [];
     function visitAdjacentNodes(current_path, doubleCave) {
         const next_nodes = adjacentNodes(paths, current_path.at(-1));
-        next_nodes.forEach((node) => {
+        next_nodes.forEach((cave) => {
             let tpath = [...current_path];
-            tpath.push(node);
-            if (node === "end") {
+            tpath.push(cave);
+            if (cave === "start") {
+                return;
+            } else if (cave === "end") {
                 all_paths.push(tpath);
             } else if (
-                node !== "start" &&
-                (node === node.toUpperCase() || !current_path.includes(node))
+                cave === cave.toUpperCase() ||
+                !current_path.includes(cave)
             ) {
                 visitAdjacentNodes(tpath, doubleCave);
-            } else if (
-                node !== "start" &&
-                node === node.toLowerCase() &&
-                doubleCave === ""
-            ) {
-                visitAdjacentNodes(tpath, node);
+            } else if (cave === cave.toLowerCase() && doubleCave === "") {
+                visitAdjacentNodes(tpath, cave);
             }
         });
     }
     startingNodes.forEach((node) => visitAdjacentNodes(["start", node], ""));
-    console.log(all_paths);
     return all_paths.length;
 }
 
