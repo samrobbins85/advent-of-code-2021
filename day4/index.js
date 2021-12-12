@@ -1,7 +1,7 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
 function preProcess(array) {
-    const draws = array.shift().split(',');
+    const draws = array.shift().split(",");
     let newArr = [];
     let index = -1;
     array.forEach((element) => {
@@ -13,14 +13,14 @@ function preProcess(array) {
         }
     });
     let splitArray = newArr
-        .map((board) => board.map((row) => row.split(' ').filter(Boolean)))
+        .map((board) => board.map((row) => row.split(" ").filter(Boolean)))
         .filter((item) => item.length);
     return { draws, splitArray };
 }
 
 const removeElement = (array, element) =>
     array.map((board) =>
-        board.map((row) => row.map((item) => (item === element ? '' : item)))
+        board.map((row) => row.map((item) => (item === element ? "" : item)))
     );
 
 const bingoSum = (array) =>
@@ -38,10 +38,10 @@ export function part1(array) {
     draws.some((element) => {
         splitArray = removeElement(splitArray, element);
         let bingoRow = splitArray.findIndex((board) =>
-            board.some((row) => row.every((element) => element === ''))
+            board.some((row) => row.every((element) => element === ""))
         );
         let bingoColumn = splitArray.findIndex((board) =>
-            board.some((row, x) => row.every((_, y) => board[y][x] === ''))
+            board.some((row, x) => row.every((_, y) => board[y][x] === ""))
         );
         if (bingoRow !== -1 || bingoColumn !== -1) {
             result = bingoSum(splitArray[bingoColumn || bingoRow]) * element;
@@ -60,8 +60,8 @@ export function part2(array) {
         const index = splitArray.findIndex((board, boardIndex) =>
             board.some((row, x) => {
                 const check =
-                    row.every((element) => element === '') ||
-                    row.every((_, y) => board[y][x] === '');
+                    row.every((element) => element === "") ||
+                    row.every((_, y) => board[y][x] === "");
                 if (check) {
                     if (
                         remainingBoards.length === 1 &&
@@ -85,5 +85,5 @@ export function part2(array) {
     return result;
 }
 
-console.log(part1(fileToArray('day4/input.txt')));
-console.log(part2(fileToArray('day4/input.txt')));
+console.log(part1(fileToArray("day4/input.txt")));
+console.log(part2(fileToArray("day4/input.txt")));

@@ -1,4 +1,4 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
 const mode = (array) => +(array.reduce((p, c) => p + c) >= array.length / 2);
 const fromBinary = (value) => parseInt(value, 2);
@@ -8,8 +8,8 @@ export function part1(data) {
         mode(data.map((line) => parseInt(line[item], 10)))
     );
     return (
-        fromBinary(binary.join('')) *
-        fromBinary(binary.map((item) => +!item).join(''))
+        fromBinary(binary.join("")) *
+        fromBinary(binary.map((item) => +!item).join(""))
     );
 }
 
@@ -27,5 +27,5 @@ export function part2(data) {
     return getResult(data, true) * getResult(data, false);
 }
 
-console.log(part1(fileToArray('day3/input.txt')));
-console.log(part2(fileToArray('day3/input.txt')));
+console.log(part1(fileToArray("day3/input.txt")));
+console.log(part2(fileToArray("day3/input.txt")));

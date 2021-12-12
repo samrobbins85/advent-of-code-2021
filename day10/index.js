@@ -1,18 +1,18 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
-const opening = ['(', '[', '{', '<'];
-const closing = [')', ']', '}', '>'];
+const opening = ["(", "[", "{", "<"];
+const closing = [")", "]", "}", ">"];
 const penalties = {
-    ')': 3,
-    ']': 57,
-    '}': 1197,
-    '>': 25137,
+    ")": 3,
+    "]": 57,
+    "}": 1197,
+    ">": 25137,
 };
 const completion = {
-    '(': 1,
-    '[': 2,
-    '{': 3,
-    '<': 4,
+    "(": 1,
+    "[": 2,
+    "{": 3,
+    "<": 4,
 };
 function processEntry(array) {
     let stack = [];
@@ -53,5 +53,5 @@ export function part2(array) {
     return out[Math.floor(out.length / 2)];
 }
 
-console.log(part1(fileToArray('day10/input.txt')));
-console.log(part2(fileToArray('day10/input.txt')));
+console.log(part1(fileToArray("day10/input.txt")));
+console.log(part2(fileToArray("day10/input.txt")));

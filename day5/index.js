@@ -1,4 +1,4 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 function range(arr) {
     let [start, end] = arr;
     if (start > end) {
@@ -40,9 +40,9 @@ function constantIndex(item) {
 function preProcess(array) {
     return array.map((item) =>
         item
-            .split(' -> ')
+            .split(" -> ")
             .map((coordinate) =>
-                coordinate.split(',').map((item) => parseInt(item, 10))
+                coordinate.split(",").map((item) => parseInt(item, 10))
             )
     );
 }
@@ -95,5 +95,5 @@ export function part2(array) {
         ).length;
     return all;
 }
-console.log(part1(fileToArray('day5/input_short.txt')));
-console.log(part2(fileToArray('day5/input_short.txt')));
+console.log(part1(fileToArray("day5/input_short.txt")));
+console.log(part2(fileToArray("day5/input_short.txt")));

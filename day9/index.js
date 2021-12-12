@@ -1,4 +1,4 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
 export function part1(array) {
     const input = array.map((item) =>
@@ -130,5 +130,5 @@ function part2Recurse(array) {
         .reduce((prev, next) => prev * next);
 }
 
-console.log(part1(fileToArray('day9/input.txt')));
-console.log(part2(fileToArray('day9/input.txt')));
+console.log(part1(fileToArray("day9/input.txt")));
+console.log(part2(fileToArray("day9/input.txt")));

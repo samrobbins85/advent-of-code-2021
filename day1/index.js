@@ -1,4 +1,4 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
 export const preProcess = (fileName) =>
     fileToArray(fileName).map((item) => parseInt(item, 10));
@@ -22,5 +22,5 @@ export function problem2(array) {
             .filter(Boolean)
     );
 }
-console.log(problem1(preProcess('day1/input.txt')));
-console.log(problem2(preProcess('day1/input.txt')));
+console.log(problem1(preProcess("day1/input.txt")));
+console.log(problem2(preProcess("day1/input.txt")));

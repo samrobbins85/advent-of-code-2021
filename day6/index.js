@@ -1,4 +1,4 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
 export function part1(array) {
     function mutate(array) {
@@ -12,7 +12,7 @@ export function part1(array) {
         });
         return array;
     }
-    let input = array[0].split(',').map((item) => parseInt(item, 10));
+    let input = array[0].split(",").map((item) => parseInt(item, 10));
     for (let day = 0; day < 80; day++) {
         input = mutate(input);
     }
@@ -29,7 +29,7 @@ export function part2(array) {
     }
     let ages = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     array[0]
-        .split(',')
+        .split(",")
         .map((item) => parseInt(item, 10))
         .forEach((age) => (ages[age] += 1));
     for (let day = 0; day < 256; day++) {
@@ -37,5 +37,5 @@ export function part2(array) {
     }
     return ages.reduce((prev, curr) => prev + curr);
 }
-console.log(part1(fileToArray('day6/input.txt')));
-console.log(part2(fileToArray('day6/input.txt')));
+console.log(part1(fileToArray("day6/input.txt")));
+console.log(part2(fileToArray("day6/input.txt")));

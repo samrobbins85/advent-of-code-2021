@@ -1,11 +1,11 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
 export function part1(array) {
     return array
         .map((item) =>
             item
-                .split(' | ')[1]
-                .split(' ')
+                .split(" | ")[1]
+                .split(" ")
                 .filter((item) => [2, 3, 4, 7].includes(item.length))
         )
         .flat().length;
@@ -13,14 +13,14 @@ export function part1(array) {
 
 function decode(input, numbers) {
     return Object.values(numbers).findIndex(
-        (item) => item.sort().join(',') === Array.from(input).sort().join(',')
+        (item) => item.sort().join(",") === Array.from(input).sort().join(",")
     );
 }
 
 export function part2(array) {
     return array
         .map((item) => {
-            let charSet = item.split(' | ')[0].split(' ');
+            let charSet = item.split(" | ")[0].split(" ");
             let numbers = {};
             function removeValue(value, index) {
                 numbers[index] = Array.from(value);
@@ -52,14 +52,14 @@ export function part2(array) {
             )[0];
             removeValue(two, 2);
             numbers[5] = Array.from(charSet[0]);
-            let output = item.split(' | ')[1].split(' ');
+            let output = item.split(" | ")[1].split(" ");
             return parseInt(
-                output.map((item) => decode(item, numbers)).join(''),
+                output.map((item) => decode(item, numbers)).join(""),
                 10
             );
         })
         .reduce((prev, curr) => prev + curr);
 }
 
-console.log(part1(fileToArray('day8/input.txt')));
-console.log(part2(fileToArray('day8/input.txt')));
+console.log(part1(fileToArray("day8/input.txt")));
+console.log(part2(fileToArray("day8/input.txt")));

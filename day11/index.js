@@ -1,4 +1,4 @@
-import { fileToArray } from '../common/utils.js';
+import { fileToArray } from "../common/utils.js";
 
 function increaseAdjacent(position, increaseSingle) {
     increaseSingle([position[0] + 1, position[1]]);
@@ -86,5 +86,5 @@ export function part2(array) {
         }
     }
 }
-console.log(part1(fileToArray('day11/input.txt')));
-console.log(part2(fileToArray('day11/input.txt')));
+console.log(part1(fileToArray("day11/input.txt")));
+console.log(part2(fileToArray("day11/input.txt")));
