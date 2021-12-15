@@ -5,7 +5,7 @@ export function part1(array) {
     array.shift();
     array = array.map((item) => Array.from(item.replace(" -> ", "")));
     let result = Array.from(template);
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 10; i++) {
         let addedItems = 0;
         [...result].forEach((item, index, arr) => {
             const insert_elem = array.filter(
@@ -67,5 +67,5 @@ export function part2(array) {
     const sorted = Object.values(all_counts).sort((a, b) => a - b);
     return sorted.at(-1) - sorted[0];
 }
-
+console.log(part1(fileToArray("day14/input.txt")));
 console.log(part2(fileToArray("day14/input.txt")));

@@ -1,25 +1,21 @@
 import { fileToArray } from "../common/utils.js";
-import util from "util";
-export function part1(array) {
-    const input = array.map((item) =>
-        Array.from(item).map((risk) => parseInt(risk, 10))
-    );
+
+function dijkstra(input) {
     let weights = input.map((row) => row.map((_) => Infinity));
     weights[0][0] = 0;
-    let visited = [];
-    while (visited.length !== input.length * input[0].length) {
-        // Find the smallest node
+    let visited = new Set();
+    while (visited.size !== input.length * input[0].length) {
         let smallest_value = Infinity;
         let coordinate = undefined;
         weights.forEach((row, y) =>
             row.forEach((cell, x) => {
-                if (cell < smallest_value && !visited.includes(`${y},${x}`)) {
+                if (cell < smallest_value && !visited.has(`${y},${x}`)) {
                     smallest_value = cell;
                     coordinate = [y, x];
                 }
             })
         );
-        visited.push(`${coordinate[0]},${coordinate[1]}`);
+        visited.add(`${coordinate[0]},${coordinate[1]}`);
         function updateDistance(source, target) {
             if (
                 weights?.[target[0]]?.[target[1]] &&
@@ -34,9 +30,41 @@ export function part1(array) {
         updateDistance(coordinate, [coordinate[0] - 1, coordinate[1]]);
         updateDistance(coordinate, [coordinate[0], coordinate[1] + 1]);
         updateDistance(coordinate, [coordinate[0], coordinate[1] - 1]);
-        console.log(visited.length);
     }
     return weights[weights.length - 1][weights[0].length - 1];
 }
 
-console.log(part1(fileToArray("day15/input.txt")));
+export function part1(array) {
+    const input = array.map((item) =>
+        Array.from(item).map((risk) => parseInt(risk, 10))
+    );
+    return dijkstra(input);
+}
+
+export function part2(array) {
+    let input = array.map((item) =>
+        Array.from(item).map((risk) => parseInt(risk, 10))
+    );
+    function increaseArray(arr, i) {
+        return arr.map((item) => (item + i > 9 ? item + i - 9 : item + i));
+    }
+    input = input.map((row) => {
+        const original = [...row];
+        for (let i = 1; i < 5; i++) {
+            const increased = increaseArray(original, i);
+            row = row.concat(increased);
+        }
+        return row;
+    });
+    const originalMatrix = JSON.parse(JSON.stringify(input));
+    for (let i = 1; i < 5; i++) {
+        const increasedMatrix = originalMatrix.map((row) =>
+            increaseArray(row, i)
+        );
+        input = [...input, ...increasedMatrix];
+    }
+    return dijkstra(input);
+}
+
+console.log(part1(fileToArray("day15/input_short.txt")));
+console.log(part2(fileToArray("day15/input_short.txt")));
