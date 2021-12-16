@@ -4,7 +4,7 @@ function dijkstra(input) {
     let weights = input.map((row) => row.map((_) => Infinity));
     weights[0][0] = 0;
     let visited = new Set();
-    while (visited.size !== input.length * input[0].length) {
+    while (weights[weights.length - 1][weights[0].length - 1] === Infinity) {
         let smallest_value = Infinity;
         let coordinate = undefined;
         weights.forEach((row, y) =>
@@ -65,6 +65,5 @@ export function part2(array) {
     }
     return dijkstra(input);
 }
-
 console.log(part1(fileToArray("day15/input_short.txt")));
 console.log(part2(fileToArray("day15/input_short.txt")));
