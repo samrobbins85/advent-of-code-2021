@@ -7,53 +7,13 @@ function getHeader(string) {
 }
 
 function typeIdFour(chunks) {
-    return parseInt(
-        chunks
-            .map((item) => item.substring(1))
-            .filter((item) => !/^0*$/.test(item))
-            .join(""),
-        2
-    );
-}
-
-function lengthTypeIdZero(remainder, length) {
-    const trimmedRemainder = remainder.substring(0, length);
-    let versionNumberSum = 0;
-    while (trimmedRemainder !== "") {
-        const { version, typeID } = getHeader(trimmedRemainder);
-        versionNumberSum += version;
-        if (typeID === 4) {
-            const chunks = trimmedRemainder.substring(6).match(/.{1,5}/g);
-            const endOfString = chunks.findIndex((item) => item[0] === "0");
-            const thisSection = chunks.slice(0, endOfString + 1);
-            // Don't need to do anything with thisSection yet
-            const nextSection = chunks.slice(endOfString + 1);
-            trimmedRemainder = nextSection.join("");
-        }
-    }
-}
-
-function ProcessString(input) {
-    const { version, typeID } = getHeader(input);
-    if (typeID === 4) {
-        console.log("Found a 4 type");
-        const remaining = input.substring(6);
-        const chunks = remaining.match(/.{1,5}/g);
-        const final = typeIdFour(chunks);
-        return final;
-    } else {
-        // Operator packet
-        console.log("Found an other type");
-        const lengthTypeID = input.substring(6, 7);
-        console.log(lengthTypeID);
-        if (lengthTypeID === "0") {
-            console.log("Length Type ID is 0");
-            const lengthSubPacket = parseInt(input.substring(7, 22), 2);
-            lengthTypeIdZero(input.substring(22), lengthSubPacket);
-        } else {
-            console.log("Length type ID is 1");
-        }
-    }
+    console.log(chunks);
+    const endOfString = chunks.findIndex((item) => item[0] === "0");
+    // Nothing to do here yet
+    const thisSection = chunks.slice(0, endOfString + 1);
+    const nextSection = chunks.slice(endOfString + 1);
+    const trimmedRemainder = nextSection.join("");
+    return trimmedRemainder;
 }
 
 export function part1(array) {
@@ -62,28 +22,43 @@ export function part1(array) {
             parseInt(character, 16).toString(2).padStart(4, "0")
         )
         .join("");
-    // const version = parseInt(input.substring(0, 3), 2);
-    // const typeID = parseInt(input.substring(3, 6), 2);
-    console.log(ProcessString(input));
-    // const { version, typeID } = getHeader(input);
-    // if (typeID === 4) {
-    //     const remaining = input.substring(6);
-    //     const chunks = remaining.match(/.{1,5}/g);
-    //     const final = typeIdFour(chunks);
-
-    //     return final;
-    // } else {
-    //     // Operator packet
-    //     const lengthTypeID = input.substring(6, 7);
-    //     console.log(lengthTypeID);
-    //     if (lengthTypeID === "0") {
-    //         const lengthSubPacket = parseInt(input.substring(7, 22), 2);
-    //         console.log("Remainder:");
-    //         lengthTypeIdZero(input.substring(22), lengthSubPacket);
-    //         console.log(lengthSubPacket);
-    //     }
-    // }
-    return array;
+    let score = 0;
+    function processString(input, remainingSubPackets) {
+        if (/^0*$/.test(input) || input.length === 0) {
+            // The remainder of the string is 0, so just padding
+            return;
+        }
+        console.log(`input: ${input}`);
+        const { version, typeID } = getHeader(input);
+        score += version;
+        console.log(`Adding ${version} to score`);
+        if (typeID === 4) {
+            console.log("Found a Literal Packet");
+            const remaining = input.substring(6);
+            const chunks = remaining.match(/.{1,5}/g);
+            const nextSection = typeIdFour(chunks);
+            processString(nextSection);
+        } else {
+            // Operator packet
+            console.log(
+                `Found an Operator Packet: typeID:${typeID}, version:${version}`
+            );
+            const lengthTypeID = input.substring(6, 7);
+            if (lengthTypeID === "0") {
+                console.log("Length Type ID is 0");
+                const lengthSubPacket = parseInt(input.substring(7, 22), 2);
+                processString(input.substring(22, 22 + lengthSubPacket));
+                processString(input.substring(22 + lengthSubPacket));
+            } else {
+                // Being lazy with this one, will likely need more work
+                console.log("Length type ID is 1");
+                const numberSubPacket = parseInt(input.substring(7, 18), 2);
+                console.log(`Number of subpackets is ${numberSubPacket}`);
+                processString(input.substring(18));
+            }
+        }
+    }
+    console.log(processString(input));
+    return score;
 }
-
-console.log(part1(fileToArray("day16/input_short.txt")));
+console.log(part1(fileToArray("day16/input.txt")));
